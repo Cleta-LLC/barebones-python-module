@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Virtual environments
+.venv/
+venv/
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -15,3 +19,27 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Runtime data (keep structure, ignore contents)
+data/json/*.json
+data/db/*.db
+data/db/*.db-wal
+data/db/*.db-shm
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

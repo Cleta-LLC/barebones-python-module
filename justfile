@@ -115,3 +115,27 @@ svc-example-test:
 # Show example service schema
 svc-example-schema:
     uv run project svc example schema
+
+# Seed recipes with built-in sample data
+svc-recipes-seed:
+    uv run project svc recipes seed
+
+# List all recipes
+svc-recipes-list:
+    uv run project svc recipes list
+
+# Search recipes
+svc-recipes-search QUERY:
+    uv run project svc recipes search {{QUERY}}
+
+# Show a recipe by ID
+svc-recipes-show ID:
+    uv run project svc recipes show {{ID}}
+
+# Test recipes service
+svc-recipes-test:
+    uv run pytest src/myapp/services/recipes/tests/
+
+# Show recipes service schema
+svc-recipes-schema:
+    uv run project svc recipes schema

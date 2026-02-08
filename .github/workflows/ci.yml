@@ -23,8 +23,37 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras
 
-      - name: Format check
-        run: uv run ruff format --check src/
+      - name: Auto-format code
+        run: uv run ruff format src/
+
+      - name: Check for formatting changes
+        id: format-check
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "::warning::Code was auto-formatted. Changes will be committed."
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit formatting changes
+        if: steps.format-check.outputs.changes == 'true' && github.event_name == 'pull_request'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git commit -m "🤖 Auto-format code with ruff
+
+          Automatically formatted by CI to maintain code style consistency.
+
+          https://claude.ai/code/session_01Vtr3wKxSRfPobdgjcx7Crr"
+
+      - name: Push formatting changes
+        if: steps.format-check.outputs.changes == 'true' && github.event_name == 'pull_request'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
 
       - name: Lint
         run: uv run ruff check src/

@@ -72,6 +72,20 @@ cli *ARGS:
 ui:
     uv run streamlit run ui/streamlit_app.py
 
+# ── Scaffolding ─────────────────────────────────────────────────────
+
+# Scaffold a new service with all required files
+scaffold NAME:
+    uv run python scripts/scaffold_service.py {{NAME}}
+
+# Rename the project (replaces all occurrences of OLD with NEW)
+rename OLD NEW:
+    @echo "Renaming '{{OLD}}' → '{{NEW}}' across the codebase..."
+    find src/ docs/ ui/ scripts/ -type f -name '*.py' -o -name '*.md' -o -name '*.toml' -o -name '*.yml' | xargs sed -i 's/{{OLD}}/{{NEW}}/g'
+    sed -i 's/{{OLD}}/{{NEW}}/g' pyproject.toml justfile README.md CONTRIBUTING.md
+    mv src/{{OLD}} src/{{NEW}} 2>/dev/null || true
+    @echo "Done. Run 'just init' to re-sync."
+
 # ── Build & Release ──────────────────────────────────────────────────
 
 # Build wheel + sdist
@@ -90,15 +104,26 @@ docker-build:
 docker-run:
     docker run --rm -it myapp:latest
 
+# ── Clean ───────────────────────────────────────────────────────────
+
+# Remove build artifacts and caches
+clean:
+    rm -rf dist/ build/ *.egg-info/
+    rm -rf .pytest_cache/ .mypy_cache/ .ruff_cache/ htmlcov/
+    find src/ -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+    @echo "Cleaned."
+
 # ── Docs ──────────────────────────────────────────────────────────────
 
-# Serve docs locally (requires mkdocs in dev deps)
-docs-serve:
-    @echo "Docs are in docs/ — open docs/quickstart.md to get started"
-
-# Build static docs
-docs-build:
-    @echo "Docs are in docs/ — static markdown, no build needed"
+# Open the quickstart guide
+docs:
+    @echo "Documentation is in docs/ — start with docs/quickstart.md"
+    @echo ""
+    @echo "  docs/quickstart.md     Get running in 3 commands"
+    @echo "  docs/architecture.md   Services, boundaries, data flow"
+    @echo "  docs/cli-reference.md  All commands and options"
+    @echo "  docs/persistence.md    JSON vs SQLite, no-sync explained"
+    @echo "  docs/extending.md      Add services, commands, schemas, UI pages"
 
 # ── Service patterns ─────────────────────────────────────────────────
 # To add commands for a new service, copy one of the patterns below

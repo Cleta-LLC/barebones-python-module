@@ -25,6 +25,10 @@ dist/
 build/
 *.egg-info/
 
+# Tool caches
+.ruff_cache/
+.mypy_cache/
+
 # Runtime data (keep structure, ignore contents)
 data/json/*.json
 data/db/*.db
@@ -43,3 +47,11 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Temp files
+*.tmp

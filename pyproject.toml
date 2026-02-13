@@ -9,6 +9,17 @@ description = "A microservice-friendly Python template — fork, extend, ship."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
+keywords = ["template", "microservice", "cli", "pydantic", "click"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
 dependencies = [
     "click>=8.1",
     "pydantic>=2.0",
@@ -22,6 +33,11 @@ dev = [
     "ruff>=0.8",
     "mypy>=1.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/OWNER/myapp"
+Documentation = "https://github.com/OWNER/myapp/tree/main/docs"
+Issues = "https://github.com/OWNER/myapp/issues"
 
 [project.scripts]
 project = "myapp.cli.main:cli"
